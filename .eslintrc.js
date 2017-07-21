@@ -27,6 +27,7 @@ module.exports = {
     'space-before-function-paren': 0,
     'func-call-spacing': 0,
     'no-unused-vars': 0,
-    'handle-callback-err': 0
+    'handle-callback-err': 0,
+    'semi': 0,
   }
 }

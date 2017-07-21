@@ -1,40 +1,30 @@
-const Vue = require('vue')
-const server = require('express')()
-const { createRenderer, createBundleRenderer } = require('vue-server-renderer')
+/* Server Packages */
+import Express from 'express';
+import bodyParser from 'body-parser';
 
-// path to built-server-bundle
-// const createApp = require('../src/entry-server') // bundle will automatically generate the app
-const template = require('fs').readFileSync('./index.html', 'utf-8')
-const serverBundle = require('../dist/vue-ssr-server-bundle.json')
-const clientManifest = require('../dist/vue-ssr-client-manifest.json')
+import apiRoutes from './controller';
+// Initialize Express server
+const app = new Express();
+const port = process.env.PORT || 3005;
 
-// const renderer = createRenderer({
-//   template: require('fs').readFileSync('../index.html', 'utf-8')
-// })
-const renderer = createBundleRenderer(serverBundle, {
-  runInNewContext: false, // 推荐
-  template, // （可选）页面模板
-  clientManifest // （可选）客户端构建 manifest
-})
+// set static file location
+app.use('/', Express.static(require('path').resolve(__dirname, '../dist')));
+console.log('============== You are in PRODUCTION MODE ==============');
 
-server.get('*', (req, res) => {
-  const context = { url: req.url }
+// Config App
+app.use(bodyParser.urlencoded({ extended: false })); // only can deal with key/value
+app.use(bodyParser.json()); // use body parser so we can get info from POST and/or URL parameters
 
-  // return a promise in entry-server
-  // createApp(context).then(app => { renderer.renderToString(app, (err, html) => { }) })
+// Set API prefix, Use apiRoutes of  Controller to resolve
+app.use('/api', apiRoutes);
 
-  // bundle will automatically generate the app
-  // decouple the server with app
-  renderer.renderToString(context, (err, html) => {
-    if (err) {
-      if (err.code === 404) {
-        res.status(404).end('Page not found')
-      } else {
-        res.status(500).end('Internal Server Error')
-      }
-    } else {
-      res.end(html)
-    }
-  })
-})
-server.listen(8080)
+// Error console
+app.listen(port, (error) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.info(`==> Listening on port ${port}`);
+  }
+});
+
+export default app;
