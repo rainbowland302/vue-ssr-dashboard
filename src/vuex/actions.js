@@ -1,16 +1,17 @@
-import request from 'axios'
+import axios from 'axios'
+import * as types from './mutation-types'
 
-request.defaults.baseURL = 'http://jsonplaceholder.typicode.com/'
+axios.defaults.baseURL = 'http://localhost:3000/api/'
 
-export const getTopics = ({ commit, state }) => {
-  return request.get('posts').then((response) => {
-    if (response.statusText === 'OK') {
-      commit('TOPICS_LIST', response.data)
-    }
-  }).catch((error) => {
-    console.log(error)
-  })
+export const fetchData = ({ commit, state }) => {
+  return axios.all([fetchUrl('isilon', 'overview'), fetchUrl('isilon', 'team'), fetchUrl('isilon', 'trend')])
+    .then(axios.spread((overall, team, trend) => {
+      commit(types.FETCH_OVERALL, overall.data)
+      commit(types.FETCH_TEAM, team.data)
+      commit(types.FETCH_TREND, trend.data)
+    })).catch((error) => {
+      console.log(error)
+    })
 }
 
-export const increment = ({ commit }) => commit('INCREMENT')
-export const decrement = ({ commit }) => commit('DECREMENT')
+const fetchUrl = (route, param) => axios.get(`${route}/${param}`)

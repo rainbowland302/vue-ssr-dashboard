@@ -8,7 +8,7 @@ import apiRoutes from './server/controller'
 const resolve = file => path.resolve(__dirname, file)
 
 const isProd = process.env.NODE_ENV === 'production'
-console.log(isProd)
+console.log(`ENV: ${isProd ? 'production' : 'development'}`)
 const app = express()
 
 let renderer

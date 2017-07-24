@@ -12,22 +12,41 @@
   </div>
 </template>
 <script>
+import { mapState, mapGetters } from 'vuex'
+
 import PieChart from './PieChart.vue'
 import LineChart from './LineChart.vue'
 import StandardTable from './StandardTable.vue'
+
 export default {
   components: { PieChart, LineChart, StandardTable },
   data() {
     return {
-      pieData: [{ name: 'Onboard', value: 10 }, { name: 'Offered', value: 10 }, { name: 'Opened Reqs', value: 20 }],
-      lineData: [
-        { name: 'Trend', value: [2, 3, 4] },
-        { name: 'Forecast', value: [1, 2, 3] }
+      tableHeader: [
+        { key: 'name', value: 'Team' },
+        { key: 'total', value: 'Total Reqs' },
+        { key: 'cv', value: 'Resume Uploaded' },
+        { key: 'resume', value: 'Resume Screened' },
+        { key: 'phone', value: 'Phone Screened' },
+        { key: 'onsite', value: 'TP/Onsite Interviewed' },
+        { key: 'reject', value: 'Failed' },
+        { key: 'offered', value: 'Offered' },
+        { key: 'onboard', value: 'Onboard' }
       ],
-      lineLabel: ['6/25', '7/2', '7/9'],
-      tableHeader: [{key: 'team', value: 'Team'}, {key: 'open', value: 'Open'}],
-      tableContent: [{team: 'EAT', open: '10'}, {team: 'DEV', open: '15'}]
     }
+  },
+  computed: {
+    ...mapGetters([
+      'pieData',
+      'lineData',
+      'lineLabel',
+    ]),
+    ...mapState({
+      tableContent: 'team'
+    })
+  },
+  asyncData({ store, route }) {
+    return store.dispatch('fetchData')
   }
 }
 </script>
@@ -36,6 +55,7 @@ export default {
   width: 300px;
   display: inline-block;
 }
+
 .line-wrapper {
   width: 600px;
   display: inline-block;
