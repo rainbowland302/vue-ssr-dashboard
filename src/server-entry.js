@@ -9,7 +9,7 @@ export default context => {
       if (!matchedComponents.length) {
         return reject({ code: 404 })
       }
-      // use `asyncData()` for matching route
+      // use `asyncData()` for components matching route
       // automatically serialized into window.__INITIAL_STATE__
       Promise.all(matchedComponents.map(Component => {
         if (Component.asyncData) {

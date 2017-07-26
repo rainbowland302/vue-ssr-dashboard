@@ -46,7 +46,7 @@ export default {
     })
   },
   asyncData({ store, route }) {
-    return store.dispatch('fetchData')
+    return store.dispatch('fetchData', route.params.product)
   }
 }
 </script>

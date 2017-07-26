@@ -7,7 +7,8 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    { path: '/', component: () => import('../components/Home.vue') }
+    { path: '/', redirect: 'isilon' },
+    { path: '/:product', component: () => import('../components/Home.vue') }
   ]
 })
 

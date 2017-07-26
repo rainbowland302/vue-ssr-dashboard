@@ -24,6 +24,7 @@ export default {
     }
   },
   mounted() {
+    // TODO: support SSR
     var myDoughnutChart = new Chart(this.$refs.canvas, {
       type: 'pie',
       data: {

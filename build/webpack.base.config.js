@@ -2,6 +2,9 @@ const path = require('path')
 // const projectRoot = path.resolve(__dirname, '../')
 const vueConfig = require('./vue-loader.config')
 
+process.env.HOST = require('ip').address();
+process.env.PORT = 3000;
+
 module.exports = {
   devtool: '#source-map',
   entry: {
