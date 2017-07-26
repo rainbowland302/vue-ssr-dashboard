@@ -17,3 +17,8 @@ export const pieData = ({ overall: { status: { offered, onboard, open } } }) => 
   { name: 'Offered', value: offered },
   { name: 'Opened Reqs', value: open }
 ]
+
+export const barGroup = ({ team }) => team.map(({filled, open}) => [
+  { name: 'Filled', value: filled },
+  { name: 'Open', value: open }
+])
